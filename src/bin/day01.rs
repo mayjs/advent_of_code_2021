@@ -1,4 +1,4 @@
-use std::{iter::Sum, path::Path};
+use std::{path::Path, ops::Add};
 
 use anyhow::Result;
 use aoc2021::stream_ints_from_file;
@@ -13,12 +13,12 @@ fn number_of_increasing_reads<I: Iterator<Item = usize>>(input: I) -> usize {
         .count()
 }
 
-fn sum_consecutive_reads<T: Sum + Clone>(
+fn sum_consecutive_reads<T: Add<Output=T> + Clone>(
     input: impl Iterator<Item = T>,
 ) -> impl Iterator<Item = T> {
     input
         .tuple_windows()
-        .map(|(a, b, c)| [a, b, c].iter().cloned().sum())
+        .map(|(a, b, c)| a + b + c)
 }
 
 fn part1<P: AsRef<Path>>(input: P) -> Result<usize> {

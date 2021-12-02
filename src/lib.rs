@@ -15,7 +15,7 @@ where
         .filter_map(Result::ok)
 }
 
-pub fn stream_ints_from_file<P: AsRef<Path>, T: FromStr>(
+pub fn stream_items_from_file<P: AsRef<Path>, T: FromStr>(
     path: P,
 ) -> std::io::Result<impl Iterator<Item = T>> {
     Ok(stream_ints(File::open(path)?))

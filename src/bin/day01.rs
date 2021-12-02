@@ -1,7 +1,7 @@
 use std::{path::Path, ops::Add};
 
 use anyhow::Result;
-use aoc2021::stream_ints_from_file;
+use aoc2021::stream_items_from_file;
 use itertools::Itertools;
 
 const INPUT: &str = "input/day01.txt";
@@ -23,12 +23,12 @@ fn sum_consecutive_reads<T: Add<Output=T> + Clone>(
 
 fn part1<P: AsRef<Path>>(input: P) -> Result<usize> {
     Ok(number_of_increasing_reads(
-        stream_ints_from_file::<_, usize>(input)?,
+        stream_items_from_file::<_, usize>(input)?,
     ))
 }
 
 fn part2<P: AsRef<Path>>(input: P) -> Result<usize> {
-    let input_numbers = stream_ints_from_file::<_, usize>(input)?;
+    let input_numbers = stream_items_from_file::<_, usize>(input)?;
     Ok(number_of_increasing_reads(sum_consecutive_reads(
         input_numbers,
     )))

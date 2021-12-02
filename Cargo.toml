@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
+thiserror = "1.0"
 itertools = "0.10.1"
 tempfile = "3.2.0"

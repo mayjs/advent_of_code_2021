@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
+use std::marker::PhantomData;
 use std::path::Path;
 use std::str::FromStr;
 
@@ -19,6 +20,49 @@ pub fn stream_items_from_file<P: AsRef<Path>, T: FromStr>(
     path: P,
 ) -> std::io::Result<impl Iterator<Item = T>> {
     Ok(stream_ints(File::open(path)?))
+}
+
+pub struct BlockCollector<T, I, F> {
+    input: T,
+    predicate: F,
+    _phantom: PhantomData<I>,
+}
+
+impl<T, I, F> BlockCollector<T, I, F> {
+    fn new(input: T, predicate: F) -> Self {
+        BlockCollector { input, predicate, _phantom: PhantomData }
+    } 
+}
+
+impl<T, I, F> Iterator for BlockCollector<T, I, F> 
+where T: Iterator<Item=I>,
+    F: FnMut(&I) -> bool {
+    type Item = Vec<I>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut group = Vec::new();
+        loop {
+            match self.input.next() {
+                Some(line) => if (self.predicate)(&line) {
+                    return Some(group);
+                } else {
+                    group.push(line);
+                },
+                None => if group.len() > 0 {
+                    return Some(group);
+                } else {
+                    return None;
+                },
+            }
+        }
+    }
+}
+
+
+pub fn stream_file_blocks<P: AsRef<Path>>(path: P) -> std::io::Result<impl Iterator<Item=Vec<String>>> {
+    let file = File::open(path)?;
+    let lines = BufReader::new(file).lines().filter_map(Result::ok);
+    Ok(BlockCollector::new(lines, |line: &String| line.len() == 0))
 }
 
 pub mod test_helpers {

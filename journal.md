@@ -30,3 +30,13 @@ The main reason for this was the parsing and evaluation of Bingo sheets. Once th
 
 I also hugely benefitted from my sorting approach for finding the best sheet in part 1 as it allowed me to just search for the minimal value in part 2.
 The obvious approach of collecting all sheets into a vector and then applying the numbers stepwise to all sheets at the same time would have probably made that part more difficult.
+
+## Day 5
+
+Day 5 seemed pretty simple at first: Some minimal parsing to get the lines, creating a map of crossed points and evaluating this map should not be too difficult, right?
+As it turns out, Rust ranges can not iterate from high values to low values (i.e. they are empty if `start > end`), which really through me off for this day.
+I created the `BidiRange` to solve this issue, which is essentially an iterator that can iterate both up and down, similar to the `range_step` function in the `num` crate.
+
+Also, I finally gave in and added a generalized 2D vector implementation, which I'll hopefully expand in the future.
+
+Part 2 turned out to be easier than I expected, the 45° constraint allowed me to just zip two separate coordinate iterators to generate points without any further issues.

@@ -40,3 +40,9 @@ I created the `BidiRange` to solve this issue, which is essentially an iterator 
 Also, I finally gave in and added a generalized 2D vector implementation, which I'll hopefully expand in the future.
 
 Part 2 turned out to be easier than I expected, the 45° constraint allowed me to just zip two separate coordinate iterators to generate points without any further issues.
+
+## Day 6
+
+Day 6 immediately made me think about the bad space efficiency that would become an issue if you were to go with the naive approach that's strongly suggested in the description.
+To mitigate this, I decided to choose another strategy: Since the lanternfish had no other attributes than their age, why don't we just store the number of lanternfish with each possible age in an array?
+This proved to be the right approach and part 2 just worked by changing the number of days accordingly.

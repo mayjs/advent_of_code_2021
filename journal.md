@@ -46,3 +46,11 @@ Part 2 turned out to be easier than I expected, the 45° constraint allowed me t
 Day 6 immediately made me think about the bad space efficiency that would become an issue if you were to go with the naive approach that's strongly suggested in the description.
 To mitigate this, I decided to choose another strategy: Since the lanternfish had no other attributes than their age, why don't we just store the number of lanternfish with each possible age in an array?
 This proved to be the right approach and part 2 just worked by changing the number of days accordingly.
+
+## Day 7
+
+This was an easier day once again.
+Once you realize that the optimal position has to be somewhere between the minimal and maximal input values, it becomes a matter of simply calculating the total fuel consumptions for all viable positions.
+
+The `parse_lines` was used twice now, maybe I should add this to my library of helper functions.
+Unfortunately, it's difficult to make a non-collection variant of it, since something like `lines.map(|line| line.split(',')).flatten().map(...)` will fail since line is only borrowed to the split function.

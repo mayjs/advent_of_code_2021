@@ -54,3 +54,11 @@ Once you realize that the optimal position has to be somewhere between the minim
 
 The `parse_lines` was used twice now, maybe I should add this to my library of helper functions.
 Unfortunately, it's difficult to make a non-collection variant of it, since something like `lines.map(|line| line.split(',')).flatten().map(...)` will fail since line is only borrowed to the split function.
+
+## Day 8
+
+Day 8 was intimidating due to the large amount of text.
+In the end, part 1 turned out to be easy and part 2 was quickly implemented once I figured out some deduction rules using the known for digits from part 1.
+
+I created the deduction rules for this day by hand, some sort of solver would probably have helped here.
+I think this day would have been nice to implement using Prolog.

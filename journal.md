@@ -62,3 +62,15 @@ In the end, part 1 turned out to be easy and part 2 was quickly implemented once
 
 I created the deduction rules for this day by hand, some sort of solver would probably have helped here.
 I think this day would have been nice to implement using Prolog.
+
+## Day 9
+
+This day was not too difficult.
+Part 1 only required some simple parsing and iterating over neighbors of points.
+
+Part 2 could be solved using a breadth first search.
+My solution is based on the assumption that every basin is always constrained by points with height 9,
+if two points could also compete in one enclosed area, it will not work properly and just combine those two basins into one, resulting in a much higher output value.
+
+The concept of a two-dimensional field like my `Heightmap` was required before to solve the Bingo problem.
+It may be a nice idea to provide the core functionality of this pattern in my aoc library.

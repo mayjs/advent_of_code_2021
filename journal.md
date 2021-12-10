@@ -74,3 +74,12 @@ if two points could also compete in one enclosed area, it will not work properly
 
 The concept of a two-dimensional field like my `Heightmap` was required before to solve the Bingo problem.
 It may be a nice idea to provide the core functionality of this pattern in my aoc library.
+
+## Day 10
+
+Finally in the double digits! 😃
+
+This day was quite fun, a simple stack-based parser without any backtracking was easy to set up and the results were quickly calculated.
+The only part that I don't like is that `tokenize` returns a `Vec` instead of an `Iterator`.
+Ownership issues made this the simplest solution I could figure out, but it should be possible to somehow "bind" the line context to the resulting iterator.
+Do you really have to create a separate `struct` for this to work?

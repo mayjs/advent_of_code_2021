@@ -6,6 +6,7 @@ use std::str::FromStr;
 
 pub mod bidirange;
 pub mod vec2d;
+pub mod field2d;
 
 pub fn stream_ints<I, T>(input: I) -> impl Iterator<Item = T>
 where

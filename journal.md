@@ -83,3 +83,13 @@ This day was quite fun, a simple stack-based parser without any backtracking was
 The only part that I don't like is that `tokenize` returns a `Vec` instead of an `Iterator`.
 Ownership issues made this the simplest solution I could figure out, but it should be possible to somehow "bind" the line context to the resulting iterator.
 Do you really have to create a separate `struct` for this to work?
+
+## Day 11
+
+Since this day once again required the creation of a 2D field and iterating over neighbors, I decided to finally implement the 2D field.
+It has some nice parsing routines that should make future assignments like this easier for me.
+I may include the logic of `OctopusEnergies::parse` into `field2d` as well.
+
+Other than that, the assignment was quickly solved.
+I originally planned to keep track of octopuses that needed to flash using a stack or queue, but ended up just iterating over whole field instead.
+There may be some room for improvements here.

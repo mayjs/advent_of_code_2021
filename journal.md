@@ -93,3 +93,15 @@ I may include the logic of `OctopusEnergies::parse` into `field2d` as well.
 Other than that, the assignment was quickly solved.
 I originally planned to keep track of octopuses that needed to flash using a stack or queue, but ended up just iterating over whole field instead.
 There may be some room for improvements here.
+
+## Day 12
+
+This was the first day involving a graph data structure.
+
+The graph implementation for this day is not really clean, I'm not really happy with the way that the internal indices are exposed by the API.
+Unfortunately, we can't easily map back from indices to node values using this approach, so other solutions would have been more difficult
+and I didn't want to spend too much time on the implementation of this data structure.
+
+The actual algorithm for finding the paths was not too hard - a simple recursive DFS which also keeps track about seen small caves.
+This solution relies on the fact that there will be no cycles between big caves, which is implied by the assignment since that would yield an infinite amount of paths.
+If such cycles exist, the solution will just fail due to a stack overflow.

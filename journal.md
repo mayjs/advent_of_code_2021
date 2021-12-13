@@ -105,3 +105,11 @@ and I didn't want to spend too much time on the implementation of this data stru
 The actual algorithm for finding the paths was not too hard - a simple recursive DFS which also keeps track about seen small caves.
 This solution relies on the fact that there will be no cycles between big caves, which is implied by the assignment since that would yield an infinite amount of paths.
 If such cycles exist, the solution will just fail due to a stack overflow.
+
+## Day 13
+
+This day was interesting.
+No complicated algorithms this time, just simple mirroring on vertical and horizontal axes.
+The second part was weird because you needed to actually create a visual output and manually decipher the resulting passphrase.
+
+I think my implementation could be a little more efficient if `drain_filter` was available in non-nightly Rust, but as it is, I couldn't think of a cleaner way to solve this problem.

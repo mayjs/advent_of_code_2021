@@ -113,3 +113,14 @@ No complicated algorithms this time, just simple mirroring on vertical and horiz
 The second part was weird because you needed to actually create a visual output and manually decipher the resulting passphrase.
 
 I think my implementation could be a little more efficient if `drain_filter` was available in non-nightly Rust, but as it is, I couldn't think of a cleaner way to solve this problem.
+
+## Day 14
+
+I was in a bit of a hurry today, but I think the solution worked out nicely in the end.
+Since the assignment for part 1 already mentioned how quickly the input would grow, I immediately suspected that part 2 would require handling many more iterations,
+so I decided to implement an approach that does keep track of element positions.
+
+Instead, my solutions only keeps track of the amounts of distinct element pairs.
+The example would give the following map: `{"NN":1, "NC": 1, "NB": 1}`.
+Applying the rule `NN -> C` would then create two different pairs: `NC` and `CN`, while all `NN` pairs are consumed.
+The resulting map is `{"CN":1, "NC": 2, "NB": 1}`.

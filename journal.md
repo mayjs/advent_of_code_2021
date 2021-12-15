@@ -124,3 +124,18 @@ Instead, my solutions only keeps track of the amounts of distinct element pairs.
 The example would give the following map: `{"NN":1, "NC": 1, "NB": 1}`.
 Applying the rule `NN -> C` would then create two different pairs: `NC` and `CN`, while all `NN` pairs are consumed.
 The resulting map is `{"CN":1, "NC": 2, "NB": 1}`.
+
+## Day 15
+
+This day just required some basic knowledge of pathfinding algorithms to find a solution.
+I opted for the A* algorithm and used the euclidean distance as an heuristic to get a quicker result.
+Path reconstruction was not required, so we can even skip storing the predecessors for every node.
+
+I noticed two issues that I'd like to improve for this solution:
+
+1. Mixing of `usize` and `u32`.
+    A lot of casting was needed because the risk levels are stored as `u32` but the node coordinates are `usize`. 
+    This should be a matter of just casting the converted `char` values once in the parsing function.
+2. Inefficient cloning of the risk field for part 2.
+    It would have been possible to just create a lazy implementation for this.
+    This implementation could have just calculated the new values as needed and we could have avoided a lot of copying work.

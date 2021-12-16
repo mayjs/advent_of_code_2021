@@ -139,3 +139,12 @@ I noticed two issues that I'd like to improve for this solution:
 2. Inefficient cloning of the risk field for part 2.
     It would have been possible to just create a lazy implementation for this.
     This implementation could have just calculated the new values as needed and we could have avoided a lot of copying work.
+
+## Day 16
+
+This day took me way longer than any of the previous days (about 1.5h).
+I made some dumb mistakes in my recursive parser function, resulting in invalid amounts of bits getting reported in some cases.
+This could have been mitigated by actually counting the number of bits that were received from the iterator through some wrapper that would keep track of the amount of times that next is called.
+Instead, I took the simple option of manually adding bytes up and that caused some troubles.
+
+Apart from that issue, this was a fun day though and the result felt very rewarding.

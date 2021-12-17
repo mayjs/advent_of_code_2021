@@ -148,3 +148,8 @@ This could have been mitigated by actually counting the number of bits that were
 Instead, I took the simple option of manually adding bytes up and that caused some troubles.
 
 Apart from that issue, this was a fun day though and the result felt very rewarding.
+
+## Day 17
+
+I didn't like this day.
+Part 1 turned out to have a trivial solution and I just ended up solving part 2 using brute force, which never feels right but worked just fine for this assignment.

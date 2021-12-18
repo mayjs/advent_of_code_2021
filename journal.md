@@ -153,3 +153,10 @@ Apart from that issue, this was a fun day though and the result felt very reward
 
 I didn't like this day.
 Part 1 turned out to have a trivial solution and I just ended up solving part 2 using brute force, which never feels right but worked just fine for this assignment.
+
+## Day 18
+
+Today was an exciting day, I never had to build a traversable tree-like structure in Rust before.
+I decided to just use reference counting pointers and runtime borrow checks, though I think this would be a nice application for the GhostCell concept.
+
+The assignment was a little ambiguous, so I was not sure at which points a reduction was needed and it's also not really clear if explosions only happen exactly at nesting depth 4 or also at larger depths. 

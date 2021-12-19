@@ -13,32 +13,88 @@ use std::{
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 struct Transform {
-    indices: [usize; 3],
-    factors: [i32; 3],
+    matrix: [[i32; 3]; 3],
+}
+
+impl Transform {
+    fn sin(degrees: usize) -> i32 {
+        match degrees {
+            0 => 0,
+            90 => 1,
+            180 => 0,
+            270 => -1,
+            _ => panic!("Invalid degrees"),
+        }
+    }
+
+    fn cos(degrees: usize) -> i32 {
+        match degrees {
+            0 => 1,
+            90 => 0,
+            180 => -1,
+            270 => 0,
+            _ => panic!("Invalid degrees"),
+        }
+    }
+
+    fn rot_x(degrees: usize) -> Self {
+        let sin = Self::sin(degrees);
+        let cos = Self::cos(degrees);
+        let matrix = [[1, 0, 0], [0, cos, -sin], [0, sin, cos]];
+        Transform { matrix }
+    }
+
+    fn rot_y(degrees: usize) -> Self {
+        let sin = Self::sin(degrees);
+        let cos = Self::cos(degrees);
+        let matrix = [[cos, 0, sin], [0, 1, 0], [-sin, 0, cos]];
+        Transform { matrix }
+    }
+
+    fn rot_z(degrees: usize) -> Self {
+        let sin = Self::sin(degrees);
+        let cos = Self::cos(degrees);
+        let matrix = [[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]];
+        Transform { matrix }
+    }
+}
+
+impl Mul for &Transform {
+    type Output = Transform;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        let mut res = Self::Output::default();
+        for x in 0..3 {
+            for y in 0..3 {
+                res.matrix[x][y] = (0..3).map(|d| self.matrix[y][d] * rhs.matrix[d][x]).sum();
+            }
+        }
+        res
+    }
 }
 
 lazy_static! {
     static ref CARDINAL_TRANSFORMS: Vec<Transform> = {
+        let up_rots = vec![
+            Transform::rot_x(0),
+            Transform::rot_x(90),
+            Transform::rot_x(180),
+            Transform::rot_x(270),
+        ];
+        let facing_rots = vec![
+            Transform::rot_y(0),
+            Transform::rot_y(90),
+            Transform::rot_y(180),
+            Transform::rot_y(270),
+            Transform::rot_z(90),
+            Transform::rot_z(270),
+        ];
 
-        let factors = &[-1,1];
-        let mut res = Vec::new();
-        for i1 in 0..=2 {
-            for i2 in 0..=2 {
-                if i2 == i1 {
-                    continue;
-                }
-                for i3 in 0..=2 {
-                    if i3 == i2 || i3 == i1 {
-                        continue;
-                    }
-                    res.extend(factors.iter().cartesian_product(factors).cartesian_product(factors).map(|((&f1,&f2),&f3)| {
-                        Transform { indices: [i1,i2,i3], factors: [f1,f2,f3]}
-                    }));
-                }
-            }
-        }
-
-        res
+        up_rots
+            .iter()
+            .cartesian_product(facing_rots.iter())
+            .map(|(up, facing)| up * facing)
+            .collect()
     };
 }
 
@@ -57,7 +113,11 @@ impl Mul<&Vec3D> for &Transform {
     type Output = Vec3D;
 
     fn mul(self, rhs: &Vec3D) -> Self::Output {
-        Vec3D::new(self.factors[0]*rhs.coords[self.indices[0]], self.factors[1]*rhs.coords[self.indices[1]], self.factors[2]*rhs.coords[self.indices[2]])
+        let mut res = Vec3D::default();
+        for y in 0..3 {
+            res.coords[y] = (0..3).map(|x| self.matrix[y][x] * rhs.coords[x]).sum();
+        }
+        res
     }
 }
 
@@ -141,7 +201,7 @@ fn assemble_map(mut relative_positions: Vec<HashSet<Vec3D>>) -> (HashSet<Vec3D>,
     // Initial Baseline is what the first scanner sees
     let mut map = relative_positions.remove(0);
     let mut scanner_map = HashSet::new();
-    scanner_map.insert(Vec3D::new(0,0,0));
+    scanner_map.insert(Vec3D::new(0, 0, 0));
     let mut to_remove: Vec<usize> = Vec::new();
     while relative_positions.len() > 0 {
         for i in 0..relative_positions.len() {
@@ -150,7 +210,7 @@ fn assemble_map(mut relative_positions: Vec<HashSet<Vec3D>>) -> (HashSet<Vec3D>,
                 map.extend(
                     scanner_result
                         .iter()
-                        .map(|rel_beacon| &(&transform * rel_beacon) + &offset)
+                        .map(|rel_beacon| &(&transform * rel_beacon) + &offset),
                 );
                 to_remove.push(i);
 
@@ -189,9 +249,14 @@ fn part1<P: AsRef<Path>>(input: P) -> Result<usize> {
 
 fn part2<P: AsRef<Path>>(input: P) -> Result<i32> {
     let scanner_results = parse_beacon_positions(input)?;
-    let (_,map) = assemble_map(scanner_results);
+    let (_, map) = assemble_map(scanner_results);
 
-    let max_dist = map.iter().cartesian_product(map.iter()).map(|(v1, v2)| (v2 - v1).manhatten_value()).max().unwrap();
+    let max_dist = map
+        .iter()
+        .cartesian_product(map.iter())
+        .map(|(v1, v2)| (v2 - v1).manhatten_value())
+        .max()
+        .unwrap();
     Ok(max_dist)
 }
 
@@ -440,12 +505,15 @@ mod tests {
             1889,-1729,1762
             1994,-1805,1792"
         };
-        input.lines().map(Vec3D::from_str).collect::<Result<_,_>>().unwrap()
-    } 
+        input
+            .lines()
+            .map(Vec3D::from_str)
+            .collect::<Result<_, _>>()
+            .unwrap()
+    }
 
     #[test]
     fn test_card_transforms() {
-        // This fails, how do you get to 24 transformations?
         assert_eq!(
             CARDINAL_TRANSFORMS
                 .iter()
@@ -460,7 +528,7 @@ mod tests {
     fn test_correlation_checks() {
         let (dir, file) = example_file();
         let scanner_results = parse_beacon_positions(file).unwrap();
-        let (map,_) = assemble_map(scanner_results);
+        let (map, _) = assemble_map(scanner_results);
 
         let superset = example_beacons();
         assert!(map == superset);

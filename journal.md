@@ -159,4 +159,16 @@ Part 1 turned out to have a trivial solution and I just ended up solving part 2 
 Today was an exciting day, I never had to build a traversable tree-like structure in Rust before.
 I decided to just use reference counting pointers and runtime borrow checks, though I think this would be a nice application for the GhostCell concept.
 
-The assignment was a little ambiguous, so I was not sure at which points a reduction was needed and it's also not really clear if explosions only happen exactly at nesting depth 4 or also at larger depths. 
+The assignment was a little ambiguous, so I was not sure at which points a reduction was needed and it's also not really clear if explosions only happen exactly at nesting depth 4 or also at larger depths.
+
+## Day 19
+
+The transformations gave me a lot of trouble today.
+My first solution considered way to many transforms, but I finally gave in and refreshed my memory about 3D transformation matrices.
+Using those it was easy to get the proper 24 possible transforms.
+
+As always, part 2 was done quickly once part 1 worked properly.
+
+All in all, this days solution is the slowest I had so far.
+It takes about .25 seconds to calculate the full beacon map and since we built it twice for part 1 and part 2, the total runtime increases to half a second.
+There definitely is some potential for optimizations here!

@@ -1,18 +1,13 @@
-with import <nixpkgs> {};
-
 let
-rustChannel = latest.rustChannels.stable;
+  pkgs = import (fetchTarball("https://github.com/NixOS/nixpkgs/archive/8021ed2090498ff171ad339c2b2eac73d4755a13.tar.gz")) {};
 in
 pkgs.mkShell {
   buildInputs = [
-    rustChannel.rust
-    rustChannel.rust-src
-    cargo
-    rustfmt
+    pkgs.cargo
+    pkgs.rustc
+    pkgs.rustfmt
   ];
 
-  shellHook = ''
-    export RUST_SRC_PATH="${rustChannel.rust-src}/lib/rustlib/src/rust/library"
-  '';
+  RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
 }
  

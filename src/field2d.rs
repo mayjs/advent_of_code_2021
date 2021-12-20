@@ -109,6 +109,16 @@ impl<T> IndexMut<(usize, usize)> for Field2D<T> {
     }
 }
 
+impl<T> IntoIterator for Field2D<T> {
+    type Item=T;
+
+    type IntoIter=<Vec<T> as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.values.into_iter()
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum NeighborIterState {
     Right,

@@ -172,3 +172,17 @@ As always, part 2 was done quickly once part 1 worked properly.
 All in all, this days solution is the slowest I had so far.
 It takes about .25 seconds to calculate the full beacon map and since we built it twice for part 1 and part 2, the total runtime increases to half a second.
 There definitely is some potential for optimizations here!
+
+## Day 20
+
+Today was an easier day for a change.
+Of course there still was one trap in the assignment: You can't assume that index 0 in the enhancement algorithm is always `.`,
+so you have to make sure to simulate an infinite field of pixels toggling on every iteration.
+
+My solution initially relied on just growing the image by two unlit pixels in all directions in every step.
+This was based on the assumption that index 0 would never be lit, but that was exactly the case in the actual input.
+The solution was easily added: On every even step, if index 0 of the replacement table is `#`, replace the unlit ring around the image by lit pixels.
+
+Of course, my solution is not very efficient with regards to memory consumption.
+The rings should only be added if the image is actually growing towards the border, but I didn't want to create
+a new Field2D that could be dynamically grown, so this was the easiest solution and the performance seems to be fine.

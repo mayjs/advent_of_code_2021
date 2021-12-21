@@ -186,3 +186,13 @@ The solution was easily added: On every even step, if index 0 of the replacement
 Of course, my solution is not very efficient with regards to memory consumption.
 The rings should only be added if the image is actually growing towards the border, but I didn't want to create
 a new Field2D that could be dynamically grown, so this was the easiest solution and the performance seems to be fine.
+
+
+## Day 21
+
+Part one was very easy this time and was quickly solved.
+The second part seemed to be very intimidating at first but ended up working just fine with a simple recursive solution.
+I did include one optimization: Instead of recursing over all three die rolls for each turn, I created a single map for all possible results and weighted the results of the recursive calls accordingly.
+The resulting solution runs in .6 seconds for both parts in the release build, cargo overhead included.
+
+I have a gut feeling that there is a nice mathematical solution for this, don't have time to figure it out though...

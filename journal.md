@@ -195,4 +195,7 @@ The second part seemed to be very intimidating at first but ended up working jus
 I did include one optimization: Instead of recursing over all three die rolls for each turn, I created a single map for all possible results and weighted the results of the recursive calls accordingly.
 The resulting solution runs in .6 seconds for both parts in the release build, cargo overhead included.
 
+One thing I completely forgot about while implementing the solution was the option to cache the return values, that's such an easy optimization!
+I added the `cached` crate to my dependencies and that reduced the execution time to 0.07s, a very nice improvement.
+
 I have a gut feeling that there is a nice mathematical solution for this, don't have time to figure it out though...

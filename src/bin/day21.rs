@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use anyhow::Result;
 use aoc2021::stream_items_from_file;
+use cached::proc_macro::cached;
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::{collections::HashMap, path::Path};
@@ -92,6 +93,7 @@ lazy_static! {
     static ref DIRAC_DIE_COMBINATIONS: HashMap<usize, usize> = get_dice_combinations(3);
 }
 
+#[cached]
 fn dirac_game(
     p1move: bool,
     p1pos: usize,

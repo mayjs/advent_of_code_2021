@@ -199,3 +199,7 @@ One thing I completely forgot about while implementing the solution was the opti
 I added the `cached` crate to my dependencies and that reduced the execution time to 0.07s, a very nice improvement.
 
 I have a gut feeling that there is a nice mathematical solution for this, don't have time to figure it out though...
+
+## Day 22
+
+Today needed some OpenSCAD visualization and took longer then expected, but it was very rewarding that the solution for part 1 was quick enough for part 2 as well!

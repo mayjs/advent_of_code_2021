@@ -203,3 +203,8 @@ I have a gut feeling that there is a nice mathematical solution for this, don't 
 ## Day 22
 
 Today needed some OpenSCAD visualization and took longer then expected, but it was very rewarding that the solution for part 1 was quick enough for part 2 as well!
+
+## Day 23
+
+Generating the possible moves got ugly, but otherwise solutions were easily found by doing a Dijkstra search for the shortest path from the starting point to the goal state.
+The input format was a bit too noisy for me, I would have preferred 4 lists in separate lines.

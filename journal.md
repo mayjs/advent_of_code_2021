@@ -208,3 +208,7 @@ Today needed some OpenSCAD visualization and took longer then expected, but it w
 
 Generating the possible moves got ugly, but otherwise solutions were easily found by doing a Dijkstra search for the shortest path from the starting point to the goal state.
 The input format was a bit too noisy for me, I would have preferred 4 lists in separate lines.
+
+## Day 24
+
+My initial solution for today is very slow, I hope to optimize it a bit by reducing allocations.

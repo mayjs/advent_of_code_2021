@@ -2,7 +2,7 @@ use anyhow::anyhow;
 use anyhow::{bail, Result};
 use aoc2021::stream_items_from_file;
 use itertools::Itertools;
-use std::collections::{HashSet, HashMap};
+use std::collections::HashMap;
 use std::{path::Path, str::FromStr};
 
 #[derive(Debug, Clone)]
@@ -190,25 +190,30 @@ fn split_program(program: Vec<Instruction>) -> Vec<Vec<Instruction>> {
     res
 }
 
-fn find_possible_states(input: isize, program: &Vec<Instruction>) -> HashMap<isize, isize> {
-    let mut state_inputs = HashMap::<isize, HashSet<isize>>::new();
+fn find_possible_states(input: isize, program: &Vec<Instruction>, state_inputs: &mut HashMap<isize, isize>, max: bool) {
+    state_inputs.clear();
     for inp in 1..=9 {
         let state = MachineState { registers: [0,0,0,input], inputs: vec![inp] };
         let final_state = run_program_from_state(program, state);
-        state_inputs.entry(final_state.registers[3]).or_default().insert(inp);
+        let entry = state_inputs.entry(final_state.registers[3]).or_default();
+        *entry = if max {
+            std::cmp::max(*entry, inp)
+        } else {
+            std::cmp::min(*entry, inp)
+        };
     }
-
-    state_inputs.into_iter().map(|(state, vals)| (state, vals.into_iter().max().unwrap())).collect()
 }
 
 fn find_all_possible_states(program: Vec<Instruction>, max: bool) -> HashMap<isize, isize> {
     let mut current_known = HashMap::new();
+    let mut local_scratchpad = HashMap::new();
     current_known.insert(0, 0);
 
     for (i,part) in split_program(program).into_iter().enumerate() {
         let mut next_known = HashMap::new();
         for (state, possible_input) in current_known {
-            for (new_state, input) in find_possible_states(state, &part) {
+            find_possible_states(state, &part, &mut local_scratchpad, max);
+            for (&new_state, &input) in local_scratchpad.iter() {
                 let new_input = possible_input * 10 + input;
                 if max {
                     if new_input > *next_known.get(&new_state).unwrap_or(&0) {

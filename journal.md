@@ -212,3 +212,9 @@ The input format was a bit too noisy for me, I would have preferred 4 lists in s
 ## Day 24
 
 My initial solution for today is very slow, I hope to optimize it a bit by reducing allocations.
+
+The easiest way to do this is to pass the result HashMap into the `find_possible_states` function instead off allocating it on every call.
+This results in a great improvement (Timings are for part 1 and part 2):
+
+* Initial solution: 4m 12s
+* Only allocate the hashmap for the single part search function once: 3m 7s

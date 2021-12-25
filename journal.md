@@ -218,3 +218,15 @@ This results in a great improvement (Timings are for part 1 and part 2):
 
 * Initial solution: 4m 12s
 * Only allocate the hashmap for the single part search function once: 3m 7s
+
+## Day 25
+
+The last day was nice and simple, so it could easily be done despite all of the family time 🙂
+Solving the assignment just meant to implement a simple update rule and do a fixed point iteration.
+The data structure for the 2D field was no problem because I already had my `Field2D` from previous days.
+
+I think I'll take a short break from AOC for the next couple of days before I go over all days and reassess what I liked and didn't like in the assigments and in my solutions.
+Afterwards, I hope to continue solving the previous AOCs.
+I did solve some days of 2020, but I had a late start and didn't manage to stick to it.
+
+To anyone who ends up reading this for some reason: Merry Christmas! 🎄

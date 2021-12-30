@@ -1,7 +1,6 @@
 use anyhow::anyhow;
 use anyhow::{bail, Result};
 use aoc2021::stream_items_from_file;
-use itertools::Itertools;
 use std::collections::HashMap;
 use std::{path::Path, str::FromStr};
 
@@ -86,7 +85,10 @@ impl FromStr for Instruction {
 #[derive(Debug, Clone, Default, Hash, PartialEq, Eq)]
 struct MachineState {
     registers: [isize; 4],
-    inputs: Vec<isize>,
+    // This is a hack and limits my mini VM to programs with only a single input, 
+    // BUT we can safe an allocation by not taking a Vec here and that safes about 1/5 of the total runtime.
+    // It only works because we split the input program on every input anyway.
+    input: isize,
 }
 
 impl RegisterOrConst {
@@ -109,7 +111,7 @@ impl Instruction {
     fn execute(&self, mut state: MachineState) -> MachineState {
         match self {
             Instruction::Input(target) => {
-                state.registers[*target] = state.inputs.pop().expect("Program error, invalid read")
+                state.registers[*target] = state.input
             }
             Instruction::Add(target, operand) => {
                 state.registers[*target] += operand.resolve(&state)
@@ -167,6 +169,10 @@ fn run_program_from_state(program: &Vec<Instruction>, init_state: MachineState) 
         .fold(init_state, |state, ins| ins.execute(state))
 }
 
+// The input programs has repeating parts that always start with an input instruction and very similar code after that.
+// Every part will clear the w, x and y registers so only the z register gets carried over to the next part.
+// We can use this to our advantage by splitting the program on input instructions and building 
+// a map of possible states instead of brute-forcing every single input.
 fn split_program(program: Vec<Instruction>) -> Vec<Vec<Instruction>> {
     let mut cur = Vec::new();
     let mut res = Vec::new();
@@ -193,7 +199,7 @@ fn split_program(program: Vec<Instruction>) -> Vec<Vec<Instruction>> {
 fn find_possible_states(input: isize, program: &Vec<Instruction>, state_inputs: &mut HashMap<isize, isize>, max: bool) {
     state_inputs.clear();
     for inp in 1..=9 {
-        let state = MachineState { registers: [0,0,0,input], inputs: vec![inp] };
+        let state = MachineState { registers: [0,0,0,input], input: inp };
         let final_state = run_program_from_state(program, state);
         let entry = state_inputs.entry(final_state.registers[3]).or_default();
         *entry = if max {
@@ -228,8 +234,6 @@ fn find_all_possible_states(program: Vec<Instruction>, max: bool) -> HashMap<isi
         }
         current_known = next_known;
         println!("We currently know {} possible final states (After part {} with {} instructions)", current_known.len(), i, part.len());
-        println!("{:?}", current_known.keys().take(10).collect_vec());
-
     }
 
     current_known
